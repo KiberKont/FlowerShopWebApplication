@@ -1,5 +1,7 @@
-﻿// Define the API URL for fetching flower data
+﻿// Базовый эндпоинт REST API для управления каталогом цветов
 const API_URL = "/api/flowerapi";
+// Запасной путь к изображению 
+const DEFULT_IMG_PATH = '/img/no-imag.png';
 // сылка на <tbody> + кеширование для последующего вызова
 const flowerTableBody = document.getElementById("flowerTableBody");
 const flowerForm = document.getElementById("flowerForm");
@@ -24,35 +26,29 @@ async function loadFlowers() {
 } 
 
 function renderTable(flowers) {
-    // Очистить контейнер таблицы.
-    // Предотвращает дублирование старых записей при обновлении данных.
+    // Очиститить контейнер для предотвращения дублирования элементов при повторном рендеринге.
     flowerTableBody.innerHTML = '';
-    // Подготовить строковую переменную для пакетной сборки HTML.
-    // Снижает количество перерисовок DOM, ускоряя рендеринг.
+    // Подготовить переменную для пакетной сборки разметки (снижает перерисовки DOM).
     let rowsHtml = '';
-    // Выполняется перебор массива flowers...
-    // Сформировать строку <tr> с ячейками данных.
+    
     flowers.forEach(flower => {
         rowsHtml += `
             <tr>
                 <td>${flower.id}</td>
                 <td>
-                    <img src ="${imgPath}" alt="${escapeHtml(flower.name)} class="rounded" style="weight: 50px; high: 50px; object-fit: cover;">
+                    <img src ="${flower.imageUrl || DEFULT_IMG_PATH}" alt="${escapeHtml(flower.name)} class="rounded" style="width: 50px; high: 50px; object-fit: cover;">
                 </td>
                 <td>${escapeHtml(flower.name)}</td>
-                <td>${flower.CategoryI}</td>
-                <td>${flower.Price} ₽</td>
-                <td>${escapeHtml(flower.Description || '')}</td>
+                <td>${flower.categoryId}</td>
+                <td>${flower.price} ₽</td>
+                <td>${escapeHtml(flower.description || '')}</td>
                 <td class="text-end">
-                    // доделать кнопки с использованием data-action="delete"
+                    <button class="btn btn-sm btn-outline-primary me-1" data-id="${flower.id}" data-action="edit">Редактировать</button>
+                    <button class="btn btn-sm btn-outline-danger" data-id="${flower.id}" data-action="delete">Удалить</button>
                 </td>
             </tr>
         `;
     });
-    // Добавить кнопки действий с data-id и data-action.
-    // Позволяет использовать паттерн делегирования событий.
-
-    // Добавить HTML-строку текущего цветка к общей переменной.
-
-    // Вставить итоговый собранный HTML в tbody.
+    // Вставить единый сформированный HTML-блок в DOM за одну операцию.
+    flowerTableBody.innerHTML = rowsHtml;  
 }
