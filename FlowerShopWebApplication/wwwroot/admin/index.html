@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — FlowerShop</title>
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <!-- defer - фоновая загрузка -->
+    <script src="/lib/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+    <script src="admin.js" defer></script>
+</head>
+<body class="bg-light">
+    <div class="container bg-white my-5 p-4 p-md-5 rounded shadow-sm">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0">Администрирование ассортиментом</h1>
+
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#flowerModal">
+                + Добавить новый цветок
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" style="width: 5%">ID</th>
+                        <th scope="col" style="width: 10%">Фото</th>
+                        <th scope="col" style="width: 20%">Название</th>
+                        <th scope="col" style="width: 15%">Категория (ID)</th>
+                        <th scope="col" style="width: 15%">Цена</th>
+                        <th scope="col" style="width: 20%">Описание</th>
+                        <th scope="col" style="width: 15%" class="text-end">Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="flowerTableBody">
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=120" alt="Розы" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                        </td>
+                        <td>Букет красных роз</td>
+                        <td>1</td>
+                        <td>2500 ₽</td>
+                        <td> Свежие голландские розы с длинным стеблем. Отличный подарок на любой праздник.</td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-outline-primary btn-sm me-1">Редактировать</button>
+                            <button type="button" class="btn btn-outline-danger btn-sm">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="flowerModal" tabindex="-1" aria-labelledby="flowerModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="flowerModalLabel">Данные цветка</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+
+                <form id="flowerForm">
+
+                    <div class="modal-body">
+                        <input type="hidden" id="flowerId">
+
+                        <div class="mb-3">
+                            <label for="flowerName" class="form-label">Название цветка</label>
+                            <input type="text" class="form-control" id="flowerName" required placeholder="Например: Букет красных роз">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="flowerCategory" class="form-label">Категория (ID)</label>
+                            <input type="number" class="form-control" id="flowerCategory" required min="1" placeholder="Например: 1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="flowerPrice" class="form-label">Цена (руб.)</label>
+                            <input type="number" class="form-control" id="flowerPrice" required min="0" placeholder="Например: 2500">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="flowerDescription" class="form-label">Описание ассортимента</label>
+                            <textarea class="form-control" id="flowerDescription" rows="3" placeholder="Опишите состав букета..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="flowerImageUrl" class="form-label">Ссылка на изображение</label>
+                            <input type="url" class="form-control" id="flowerImageUrl" placeholder="https://example.com/image.jpg">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>  
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿/* Делаем фон страницы мягким, чтобы белая карточка выделялась */
+body {
+    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Красивый шрифт без засечек */
+    padding: 50px; /* Отступ от краев экрана */
+}
+
+/* Дизайн главной коробки (нашей карточки) */
+.flower-card {
+    background-color: white;
+    width: 320px; /* Фиксированная ширина */
+    border-radius: 15px; /* Скругляем углы */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Добавляем мягкую тень */
+    padding: 20px; /* Внутренние отступы, чтобы текст не лип к краям */
+    transition: transform 0.3s ease; /* Плавная анимация... */
+}
+
+    /* ...которая срабатывает при наведении мышки! */
+    .flower-card:hover {
+        transform: translateY(-10px);
+    }
+
+    /* Стили для картинки (даже если она сломана, мы задаем ей рамки) */
+    .flower-card img {
+        width: 100%; /* Картинка занимает всю ширину карточки */
+        border-radius: 10px; /* Тоже скругляем ей углы */
+        background-color: #ffe6e6; /* Розоватый фон на случай, если фото не загрузится */
+    }
+
+/* Стили для цены */
+.flower-price {
+    font-size: 24px;
+    color: #e63946; /* Ярко-красный цвет */
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* Стили для блока с адресами */
+.stores-list {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border-left: 4px solid #457b9d; /* Синяя полоска слева для красоты */
+}
+
+    /* Убираем уродливые отступы у списка */
+    .stores-list ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+.catalog-container {
+    display: flex; /* Включаем гибкую сетку */
+    flex-wrap: wrap; /* Разрешаем перенос на новую */                                                            
+    gap: 20px; /* Расстояние между карточками */
+}
