@@ -37,7 +37,7 @@ function renderTable(flowers) {
             <tr>
                 <td>${flower.id}</td>
                 <td>
-                    <img src ="${flower.imageUrl || DEFULT_IMG_PATH}" alt="${escapeHtml(flower.name)}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                    <img src ="${escapeHtml(flower.imageUrl || DEFULT_IMG_PATH)}" alt="${escapeHtml(flower.name)}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
                 </td>
                 <td>${escapeHtml(flower.name)}</td>
                 <td>${flower.categoryId}</td>
