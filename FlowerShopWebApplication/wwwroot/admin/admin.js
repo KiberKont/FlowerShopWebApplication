@@ -73,3 +73,8 @@ flowerTableBody.addEventListener('click', async (event) => {
         alert(`Не удалось удалить выбранную позицию: ${error.message}`);
     }
 });
+
+
+
+// Загрузить список цветов после полной загрузки DOM-дерева
+document.addEventListener('DOMContentLoaded', loadFlowers);
