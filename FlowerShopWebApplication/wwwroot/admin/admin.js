@@ -52,3 +52,23 @@ function renderTable(flowers) {
     // Вставить единый сформированный HTML-блок в DOM за одну операцию.
     flowerTableBody.innerHTML = rowsHtml;  
 }
+
+// настроить делегирование событий для действий в таблице
+flowerTableBody.addEventListener('click', async (event) => {
+    const deleteBtn = event.target.closest('[data-action="delete"]');
+    if (!deleteBtn) return;
+
+    const id = deleteBtn.dataset.id;
+    if (!confirm('Вы действительно хотите удалить эту позцию')) return;
+
+    try {
+        const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        if (!response.ok) { throw new Error(`Ошибка: ${response.status}`); }
+        // Обновить таблицу после успешного удаления
+        loadFlowers() 
+    }
+    catch(error) {
+        console.error("Ошибка удаления", error);
+        alert(`Не удалось удалить выбранную позицию: ${error.message}`);
+    }
+});
