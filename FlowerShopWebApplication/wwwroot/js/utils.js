@@ -1,6 +1,6 @@
 ﻿// Экранировать спецсимволы HTML для предотвращения XSS-атак
 function escapeHtml(text) {
-    if (!text) return '';
+    if (text === null || text === undefined) return '';
     return String(text)
         .replaceAll('&', '&amp;')
         .replaceAll('<', '&lt;')
