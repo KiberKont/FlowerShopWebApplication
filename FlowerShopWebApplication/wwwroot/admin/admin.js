@@ -17,6 +17,7 @@ async function loadFlowers() {
         }
         // десериализованый Json в масив JS
         const loadedFlowers = await response.json();
+        renderTable(loadedFlowers);
     }
     // Логирование деталей сбоя и выброс ошибки пользователю
     catch (error) {
@@ -26,7 +27,7 @@ async function loadFlowers() {
 } 
 
 function renderTable(flowers) {
-    // Очиститить контейнер для предотвращения дублирования элементов при повторном рендеринге.
+    // Очистить контейнер для предотвращения дублирования элементов при повторном рендеринге.
     flowerTableBody.innerHTML = '';
     // Подготовить переменную для пакетной сборки разметки (снижает перерисовки DOM).
     let rowsHtml = '';
@@ -36,7 +37,7 @@ function renderTable(flowers) {
             <tr>
                 <td>${flower.id}</td>
                 <td>
-                    <img src ="${flower.imageUrl || DEFULT_IMG_PATH}" alt="${escapeHtml(flower.name)} class="rounded" style="width: 50px; high: 50px; object-fit: cover;">
+                    <img src ="${flower.imageUrl || DEFULT_IMG_PATH}" alt="${escapeHtml(flower.name)}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
                 </td>
                 <td>${escapeHtml(flower.name)}</td>
                 <td>${flower.categoryId}</td>
@@ -59,7 +60,7 @@ flowerTableBody.addEventListener('click', async (event) => {
     if (!deleteBtn) return;
 
     const id = deleteBtn.dataset.id;
-    if (!confirm('Вы действительно хотите удалить эту позцию')) return;
+    if (!confirm('Вы действительно хотите удалить эту позицию')) return;
 
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
