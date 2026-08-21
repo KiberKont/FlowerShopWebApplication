@@ -5,6 +5,10 @@ const DEFULT_IMG_PATH = '/img/no-imag.png';
 // сылка на <tbody> + кеширование для последующего вызова
 const flowerTableBody = document.getElementById("flowerTableBody");
 const flowerForm = document.getElementById("flowerForm");
+const flowerId = document.getElementById("flowerId");
+const addFlowerBtnModal = document.getElementById("addFlowerBtn");
+// Экземпляр модального окна Bootstrap для программного управления (открытие/закрытие)
+const flowerModal = new bootstrap.Modal(document.getElementById('flowerModal'));
 
 
 
@@ -72,6 +76,14 @@ flowerTableBody.addEventListener('click', async (event) => {
         console.error("Ошибка удаления", error);
         alert(`Не удалось удалить выбранную позицию: ${error.message}`);
     }
+});
+
+// Настроить открытие модального окна для создания нового цветка
+addFlowerBtnModal.addEventListener('click', (event) => {
+    // Очистить форму и скрытый атрибут flowerId
+    flowerForm.reset();
+    flowerId.value = '';
+    flowerModal.show();
 });
 
 
