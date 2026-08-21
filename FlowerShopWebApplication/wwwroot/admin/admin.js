@@ -4,11 +4,18 @@ const API_URL = "/api/flowerapi";
 const DEFULT_IMG_PATH = '/img/no-imag.png';
 // сылка на <tbody> + кеширование для последующего вызова
 const flowerTableBody = document.getElementById("flowerTableBody");
-const flowerForm = document.getElementById("flowerForm");
 const flowerId = document.getElementById("flowerId");
-const addFlowerBtnModal = document.getElementById("addFlowerBtn");
+const addFlowerBtn = document.getElementById("addFlowerBtn");
+const flowerForm = document.getElementById("flowerForm");
+const flowerModalLabel = document.getElementById("flowerModalLabel");
+// Кешировать инпуты формы редактирования
+const inputFlowerName = document.getElementById("flowerName");
+const inputFlowerCategory = document.getElementById("flowerCategory");
+const inputFlowerPrice = document.getElementById("flowerPrice");
+const inputFlowerDescription = document.getElementById("flowerDescription");
+const inputFlowerImageUrl = document.getElementById("flowerImageUrl");
 // Экземпляр модального окна Bootstrap для программного управления (открытие/закрытие)
-const flowerModal = new bootstrap.Modal(document.getElementById('flowerModal'));
+const flowerModalWindow = new bootstrap.Modal(document.getElementById('flowerModal'));
 
 
 
@@ -58,32 +65,68 @@ function renderTable(flowers) {
     flowerTableBody.innerHTML = rowsHtml;  
 }
 
-// настроить делегирование событий для действий в таблице
-flowerTableBody.addEventListener('click', async (event) => {
-    const deleteBtn = event.target.closest('[data-action="delete"]');
-    if (!deleteBtn) return;
-
-    const id = deleteBtn.dataset.id;
+async function deleteFlower (id) {
     if (!confirm('Вы действительно хотите удалить эту позицию')) return;
 
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
         if (!response.ok) { throw new Error(`Ошибка: ${response.status}`); }
         // Обновить таблицу после успешного удаления
-        loadFlowers() 
+        loadFlowers()
     }
-    catch(error) {
+    catch (error) {
         console.error("Ошибка удаления", error);
         alert(`Не удалось удалить выбранную позицию: ${error.message}`);
+    }
+}
+
+async function openEditModal(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`);
+        if (!response.ok) { throw new Error(`Ошибка: ${response.status}`); }
+        const flower = await response.json();
+
+        flowerId.value = flower.id;
+        inputFlowerName.value = flower.name;
+        inputFlowerCategory.value = flower.categoryId;
+        inputFlowerPrice.value = flower.price;
+        inputFlowerDescription.value = flower.description;
+        inputFlowerImageUrl.value = flower.imageUrl;
+        flowerModalLabel.textContent = 'Редактировать цветок'; 
+
+        flowerModalWindow.show();
+    }
+    catch (error) {
+        console.error("Ошибка редактирования", error);
+        alert(`Не удалось открыть для редактирования позицию: ${error.message}`);
+    }
+}
+
+// настроить делегирование событий для действий в таблице
+flowerTableBody.addEventListener('click', async (event) => {
+    // Найти первейший элемент с атрибутом data-action
+    const actionBtn = event.target.closest('[data-action]');
+    if (!actionBtn) return;
+
+    const action = actionBtn.dataset.action;
+    const id = actionBtn.dataset.id
+
+    switch (action) {
+        case 'delete': await deleteFlower(id)
+            break;
+        case 'edit': await openEditModal(id)
+            break;
     }
 });
 
 // Настроить открытие модального окна для создания нового цветка
-addFlowerBtnModal.addEventListener('click', (event) => {
+addFlowerBtn.addEventListener('click', (event) => {
+    // Сбросить заголовк окна в режим добавления
+    flowerModalLabel.textContent = 'Добавить новый цветок'
     // Очистить форму и скрытый атрибут flowerId
     flowerForm.reset();
     flowerId.value = '';
-    flowerModal.show();
+    flowerModalWindow.show();
 });
 
 
