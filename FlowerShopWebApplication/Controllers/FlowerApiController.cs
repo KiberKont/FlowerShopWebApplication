@@ -30,15 +30,14 @@ namespace FlowerShopWebApplication.Controllers
             return Ok(flowers);
         }
 
-        // -- переделать в асинхроность--
         // GET /api/flowerapi/{id}
         // Возвращает один цветок по ID или 404, если не найден
         [HttpGet("{id}")]
-        public ActionResult<Flower> GetByIdA(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var flower = _repository.GetByIdAsync(id);
+            var flower = await _repository.GetByIdAsync(id);
             if (flower == null)
-                return NotFound();
+                return NotFound("Товар с таким Id не найден");
 
             return Ok(flower);
         }
