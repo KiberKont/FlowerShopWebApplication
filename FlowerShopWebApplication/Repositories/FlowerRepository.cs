@@ -41,6 +41,7 @@ namespace FlowerShopWebApplication.Repositories
                     Price = f.Price,
                     Description = f.Description,
                     ImageUrl = f.ImageUrl,
+                    CategoryId = f.CategoryId,
 
                     // Собираем адреса только тех точек, где товар физически есть на складе
                     AvailableStores = f.Inventories
