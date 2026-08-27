@@ -43,10 +43,13 @@ function renderTable(flowers) {
     // Подготовить переменную для пакетной сборки разметки (снижает перерисовки DOM).
     let rowsHtml = '';
     
-    flowers.forEach(flower => {
+    flowers.forEach((flower, index) => {
+        // Порядковый номер для товаров в таблице вместо реального id из БД
+        const rowNumber = index + 1;
+
         rowsHtml += `
             <tr>
-                <td>${flower.id}</td>
+                <td>${rowNumber}</td>
                 <td>
                     <img src ="${escapeHtml(flower.imageUrl || DEFULT_IMG_PATH)}" alt="${escapeHtml(flower.name)}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
                 </td>
