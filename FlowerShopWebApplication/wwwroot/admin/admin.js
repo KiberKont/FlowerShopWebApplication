@@ -71,8 +71,7 @@ async function deleteFlower (id) {
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
         if (!response.ok) { throw new Error(`Ошибка: ${response.status}`); }
-        // Обновить таблицу после успешного удаления
-        loadFlowers()
+        await loadFlowers()
     }
     catch (error) {
         console.error("Ошибка удаления", error);
@@ -129,7 +128,66 @@ addFlowerBtn.addEventListener('click', (event) => {
     flowerModalWindow.show();
 });
 
+flowerForm.addEventListener('submit', async (event) => {
+    // Отмена перезагрузки страницы
+    event.preventDefault();
 
+    const id = flowerId.value;
+
+    // Коректный парсинг в Float требует использования только "."
+    // CategoryId не допускает Null, дефолтное занчение "1
+    const flowerData = {
+        name: inputFlowerName.value.trim(),
+        description: inputFlowerDescription.value.trim(),
+        price: parseFloat(inputFlowerPrice.value.replace(',', '.')) || 0,
+        imageUrl: inputFlowerImageUrl.value.trim(),
+        categoryId: parseInt(inputFlowerCategory.value, 10) || 1
+    };
+
+    // Определить режим формы создание или редактирвание
+    // Режим создания
+    if (!id) {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(flowerData)
+            });
+            if (!response.ok) { throw new Error(`Ошибка: ${response.status}`); }
+            // Закрыть и очистить окно формы, для последующих использаваний
+            flowerModalWindow.hide();
+            flowerForm.reset();
+            await loadFlowers();
+        }
+        catch (error) {
+            console.error("Ошибка Добавления", error);
+            alert(`Не удалось добавить позицию: ${error.message}`);
+        }
+    }
+    // Режим редактирования
+    else {
+        try {
+            // Обязательно добавить ID внутрь объекта так без него контролер 
+            // выкинет ошибку 
+            flowerData.id = parseInt(id, 10);
+
+            const response = await fetch((`${API_URL}/${id}`), {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(flowerData)
+            });
+            if (!response.ok) { throw new Error(`Ошибка: ${response.status}`); }
+            // Закрыть и очистить окно формы, для последующих использаваний
+            flowerModalWindow.hide();
+            flowerForm.reset();
+            await loadFlowers();
+        }
+        catch (error) {
+            console.error("Ошибка Редактирования", error);
+            alert(`Не удалось редактировать позицию: ${error.message}`);
+        }
+    }
+});
 
 // Загрузить список цветов после полной загрузки DOM-дерева
 document.addEventListener('DOMContentLoaded', loadFlowers);
