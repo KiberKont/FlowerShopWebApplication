@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // регистрация контекста БД
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefualtConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //регистрация репозитория
 builder.Services.AddScoped<IFlowerRepository, FlowerRepository>();
